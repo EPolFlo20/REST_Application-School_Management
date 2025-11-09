@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.example.aws.exception.AlumnoException;
+import com.example.aws.exception.ProfesorException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -71,6 +72,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AlumnoException.class)
     public ResponseEntity<Object> handleAlumnoException(AlumnoException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", ex.getStatus());
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProfesorException.class)
+    public ResponseEntity<Object> ProfesorException(ProfesorException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", ex.getStatus());
         body.put("message", ex.getMessage());

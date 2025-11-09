@@ -5,9 +5,9 @@ public class Profesor {
     private String nombres;
     private String apellidos;
     private int numeroEmpleado;
-    private double horasClase;
+    private int horasClase;
 
-    public Profesor(Long id, String nombres, String apellidos, int numeroEmpleado, double horasClase) {
+    public Profesor(Long id, String nombres, String apellidos, int numeroEmpleado, int horasClase) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -15,7 +15,7 @@ public class Profesor {
         this.horasClase = horasClase;
     }
     
-    public Profesor(String nombres, String apellidos, int numeroEmpleado, double horasClase) {
+    public Profesor(String nombres, String apellidos, int numeroEmpleado, int horasClase) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.numeroEmpleado = numeroEmpleado;
@@ -60,11 +60,11 @@ public class Profesor {
         this.numeroEmpleado = numeroEmpleado;
     }
 
-    public double getHorasClase() {
+    public int getHorasClase() {
         return this.horasClase;
     }
 
-    public void setHorasClase(double horasClase) {
+    public void setHorasClase(int horasClase) {
         this.horasClase = horasClase;
     }
 
