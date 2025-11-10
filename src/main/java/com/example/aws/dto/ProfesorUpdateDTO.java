@@ -5,26 +5,19 @@ import com.example.aws.Validations.NameValidation;
 import com.example.aws.Validations.NumeroEmpleadoValidation;
 import com.example.aws.Validations.idValidation;
 
-import jakarta.validation.constraints.NotNull;
-
-public record ProfesorDTO(
-        @NotNull
+public record ProfesorUpdateDTO(
         @idValidation
         Long id,
 
-        @NotNull
         @NameValidation        
         String nombres,
         
-        @NotNull
         @NameValidation
         String apellidos,
         
-        @NotNull
         @NumeroEmpleadoValidation
         int numeroEmpleado,
         
-        @NotNull
         @HorasClaseValidation
         int horasClase) {
 }

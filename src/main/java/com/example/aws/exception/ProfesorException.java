@@ -1,8 +1,16 @@
 package com.example.aws.exception;
 
-public class ProfesorException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public ProfesorException(String message) {
+public class ProfesorException extends RuntimeException {
+    private final HttpStatus status;
+
+    public ProfesorException(String message, HttpStatus status) {
         super(message);
+        this.status = status;
+    }
+
+    public HttpStatus getStatus(){
+        return status;
     }
 }
