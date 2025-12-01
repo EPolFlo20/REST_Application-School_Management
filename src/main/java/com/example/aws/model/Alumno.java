@@ -1,31 +1,25 @@
 package com.example.aws.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+@Table(name = "alumno")
 public class Alumno {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombres;
     private String apellidos;
     private String matricula;
     private double promedio;
+    private String fotoPerfilUrl;
+    private String password;
 
-    public Alumno(Long id, String nombres, String apellidos, String matricula, double promedio) {
-        this.id = id;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.matricula = matricula;
-        this.promedio = promedio;
-    }
-    
-    public Alumno(String nombres, String apellidos, String matricula, double promedio) {
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.matricula = matricula;
-        this.promedio = promedio;
-    }
-
-    public Alumno(String nombres, String apellidos, String matricula) {
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.matricula = matricula;
+    public Alumno() {
     }
 
     public Long getId() {
@@ -68,4 +62,19 @@ public class Alumno {
         this.promedio = promedio;
     }
 
+    public String getFotoPerfilUrl() {
+        return this.fotoPerfilUrl;
+    }
+
+    public void setFotoPerfilUrl(String fotoPerfilUrl) {
+        this.fotoPerfilUrl = fotoPerfilUrl;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
