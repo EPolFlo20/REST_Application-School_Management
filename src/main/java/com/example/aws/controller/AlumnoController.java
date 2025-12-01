@@ -1,6 +1,7 @@
 package com.example.aws.controller;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -63,13 +64,17 @@ public class AlumnoController {
         return ResponseEntity.ok(this.alumnoService.findAll());
     }
 
-    // -------- Additional Endpoints without implementation -------- //
-
-    @PostMapping("/{id}/fotoPerfil")
-    public ResponseEntity<?> uploadFotoPerfil(@PathVariable Long id, @RequestParam ("file") MultipartFile file) {
+    @PostMapping(path = "/{id}/fotoPerfil")
+    public ResponseEntity<?> uploadFotoPerfil(@PathVariable Long id, @RequestParam("foto") MultipartFile file) {
         String fotoPerfilUrl = this.alumnoService.uploadFotoPerfil(id, file);
-        return ResponseEntity.ok(fotoPerfilUrl);
+        System.out.println("Foto de perfil subida a URL: " + fotoPerfilUrl);
+
+        return ResponseEntity.ok(Map.of(
+                "mensaje", "Foto de perfil subida exitosamente",
+                "fotoPerfilUrl", fotoPerfilUrl));
     }
+
+    // -------- Additional Endpoints without implementation -------- //
 
     @PostMapping("/{id}/email")
     public ResponseEntity<?> sendAlumnoEmail(@PathVariable Long id) {
