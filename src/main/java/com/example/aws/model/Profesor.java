@@ -1,31 +1,23 @@
 package com.example.aws.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+@Table(name = "profesor")
 public class Profesor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombres;
     private String apellidos;
     private int numeroEmpleado;
     private int horasClase;
 
-    public Profesor(Long id, String nombres, String apellidos, int numeroEmpleado, int horasClase) {
-        this.id = id;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.numeroEmpleado = numeroEmpleado;
-        this.horasClase = horasClase;
-    }
-    
-    public Profesor(String nombres, String apellidos, int numeroEmpleado, int horasClase) {
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.numeroEmpleado = numeroEmpleado;
-        this.horasClase = horasClase;
-    }
-
-    public Profesor(String nombres, String apellidos, int numeroEmpleado) {
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.numeroEmpleado = numeroEmpleado;
+    public Profesor() {
     }
 
     public Long getId() {

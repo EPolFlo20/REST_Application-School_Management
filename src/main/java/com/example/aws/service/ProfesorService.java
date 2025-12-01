@@ -1,7 +1,6 @@
 package com.example.aws.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.example.aws.dto.ProfesorDTO;
 import com.example.aws.dto.ProfesorUpdateDTO;
@@ -15,9 +14,7 @@ public interface ProfesorService {
 
     void deleteProfesor(Long id);
 
-    Optional<Profesor> findById(Long id);
-
-    Profesor findProfesor(Long id);
+    Profesor findById(Long id);
 
     List<Profesor> findAll();
 
