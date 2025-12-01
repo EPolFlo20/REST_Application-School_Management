@@ -1,11 +1,11 @@
 package com.example.aws.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.aws.dto.AlumnoDTO;
 import com.example.aws.dto.AlumnoUpdateDTO;
@@ -22,8 +22,6 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Alumno createAlumno(AlumnoDTO alumnoDTO) {
-        // validateAlumnoDoesNotExist(alumnoDTO.id());
-
         Alumno newAlumno = new Alumno();
         newAlumno.setNombres(alumnoDTO.nombres());
         newAlumno.setApellidos(alumnoDTO.apellidos());
@@ -81,17 +79,7 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
-    public void sendAlumnoInfoEmail(Long id) {
-        if (findAlumno(id) != null) {
-            // Lógica para enviar el correo electrónico con la información del alumno
-            System.out.println("Enviando correo electrónico con la información del alumno con ID: " + id);
-        } else {
-            throw new AlumnoException("No existe un alumno con el id " + id, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @Override
-    public String uploadFotoPerfil(Long id) {
+    public String uploadFotoPerfil(Long id, MultipartFile file) {
         Alumno alumno = findAlumno(id);
         // Lógica para subir la foto de perfil y obtener la URL
         // Subir con permisos públicos
@@ -101,4 +89,15 @@ public class AlumnoServiceImpl implements AlumnoService {
 
         return fotoPerfilUrl;
     }
+
+    @Override
+    public void sendAlumnoInfoEmail(Long id) {
+        if (findAlumno(id) != null) {
+            // Lógica para enviar el correo electrónico con la información del alumno
+            System.out.println("Enviando correo electrónico con la información del alumno con ID: " + id);
+        } else {
+            throw new AlumnoException("No existe un alumno con el id " + id, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
