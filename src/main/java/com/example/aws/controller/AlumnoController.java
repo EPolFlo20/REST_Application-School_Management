@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 
@@ -64,8 +66,8 @@ public class AlumnoController {
     // -------- Additional Endpoints without implementation -------- //
 
     @PostMapping("/{id}/fotoPerfil")
-    public ResponseEntity<?> uploadFotoPerfil(@PathVariable Long id) {
-        String fotoPerfilUrl = this.alumnoService.uploadFotoPerfil(id);
+    public ResponseEntity<?> uploadFotoPerfil(@PathVariable Long id, @RequestParam ("file") MultipartFile file) {
+        String fotoPerfilUrl = this.alumnoService.uploadFotoPerfil(id, file);
         return ResponseEntity.ok(fotoPerfilUrl);
     }
 
@@ -76,13 +78,13 @@ public class AlumnoController {
     }
 
     @PostMapping("/{id}/session/login")
-    public ResponseEntity<?> loginAlumno(@PathVariable Long id) {
+    public ResponseEntity<?> loginAlumno(@PathVariable Long id, @RequestBody String loginData) {
         // Implement login logic here
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/session/verify")
-    public ResponseEntity<?> verifyAlumnoSession(@PathVariable Long id) {
+    public ResponseEntity<?> verifyAlumnoSession(@PathVariable Long id, @RequestBody String sessionData) {
         // Implement session verification logic here
         return ResponseEntity.ok().build();
     }
