@@ -61,4 +61,36 @@ public class AlumnoController {
         return ResponseEntity.ok(this.alumnoService.findAll());
     }
 
+    // -------- Additional Endpoints without implementation -------- //
+
+    @PostMapping("/{id}/fotoPerfil")
+    public ResponseEntity<?> uploadFotoPerfil(@PathVariable Long id) {
+        String fotoPerfilUrl = this.alumnoService.uploadFotoPerfil(id);
+        return ResponseEntity.ok(fotoPerfilUrl);
+    }
+
+    @PostMapping("/{id}/email")
+    public ResponseEntity<?> sendAlumnoEmail(@PathVariable Long id) {
+        this.alumnoService.sendAlumnoInfoEmail(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/session/login")
+    public ResponseEntity<?> loginAlumno(@PathVariable Long id) {
+        // Implement login logic here
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/session/verify")
+    public ResponseEntity<?> verifyAlumnoSession(@PathVariable Long id) {
+        // Implement session verification logic here
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/session/logout")
+    public ResponseEntity<?> logoutAlumno(@PathVariable Long id) {
+        // Implement logout logic here
+        return ResponseEntity.ok().build();
+    }
+
 }
