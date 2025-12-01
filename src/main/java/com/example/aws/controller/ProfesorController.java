@@ -46,19 +46,19 @@ public class ProfesorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAlumno(@PathVariable Long id) {
-        Profesor deletedProfesor = this.profesorService.findProfesor(id);
+    public ResponseEntity<?> deleteProfesor(@PathVariable Long id) {
+        Profesor deletedProfesor = this.profesorService.findById(id);
         this.profesorService.deleteProfesor(id);
         return ResponseEntity.ok(deletedProfesor);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id){
-        return ResponseEntity.ok(this.profesorService.findProfesor(id));
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.profesorService.findById(id));
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(this.profesorService.findAll());
     }
 }
