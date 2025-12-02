@@ -18,10 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 
+import com.example.aws.components.AlumnoMessageBuilder;
 import com.example.aws.dto.AlumnoDTO;
 import com.example.aws.dto.AlumnoUpdateDTO;
 import com.example.aws.model.Alumno;
 import com.example.aws.service.AlumnoService;
+import com.example.aws.service.impl.SnsService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,9 +31,11 @@ import com.example.aws.service.AlumnoService;
 public class AlumnoController {
 
     private final AlumnoService alumnoService;
+    private final SnsService snsService;
 
-    public AlumnoController(AlumnoService alumnoService) {
+    public AlumnoController(AlumnoService alumnoService, SnsService snsService) {
         this.alumnoService = alumnoService;
+        this.snsService = snsService;
     }
 
     @PostMapping
@@ -74,13 +78,21 @@ public class AlumnoController {
                 "fotoPerfilUrl", fotoPerfilUrl));
     }
 
-    // -------- Additional Endpoints without implementation -------- //
-
     @PostMapping("/{id}/email")
     public ResponseEntity<?> sendAlumnoEmail(@PathVariable Long id) {
-        this.alumnoService.sendAlumnoInfoEmail(id);
-        return ResponseEntity.ok().build();
+
+        Alumno alumno = this.alumnoService.findAlumno(id);
+
+        String message = AlumnoMessageBuilder.buildAlumnoMessage(
+                alumno,
+                "Envío de información del alumno por correo electrónico");
+
+        this.snsService.publish(message);
+
+        return ResponseEntity.ok(Map.of("mensaje", "Mensaje enviado vía SNS"));
     }
+
+    // -------- Additional Endpoints without implementation -------- //
 
     @PostMapping("/{id}/session/login")
     public ResponseEntity<?> loginAlumno(@PathVariable Long id, @RequestBody String loginData) {

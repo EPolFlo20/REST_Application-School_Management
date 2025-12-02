@@ -84,6 +84,11 @@
 			<version>2.20.143</version>
 		</dependency>
 
+		<!-- AWS SDK para SNS -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>sns</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

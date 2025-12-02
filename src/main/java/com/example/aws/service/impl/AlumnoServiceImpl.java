@@ -92,15 +92,4 @@ public class AlumnoServiceImpl implements AlumnoService {
 
         return fotoPerfilUrl;
     }
-
-    @Override
-    public void sendAlumnoInfoEmail(Long id) {
-        if (findAlumno(id) != null) {
-            // Lógica para enviar el correo electrónico con la información del alumno
-            System.out.println("Enviando correo electrónico con la información del alumno con ID: " + id);
-        } else {
-            throw new AlumnoException("No existe un alumno con el id " + id, HttpStatus.NOT_FOUND);
-        }
-    }
-
 }
