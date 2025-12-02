@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("status", ex.getStatus());
         body.put("message", ex.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, ex.getStatus() != null ? ex.getStatus() : HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ProfesorException.class)
