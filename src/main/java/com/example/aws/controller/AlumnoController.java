@@ -1,6 +1,7 @@
 package com.example.aws.controller;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,10 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 
+import com.example.aws.components.AlumnoMessageBuilder;
 import com.example.aws.dto.AlumnoDTO;
 import com.example.aws.dto.AlumnoUpdateDTO;
 import com.example.aws.model.Alumno;
 import com.example.aws.service.AlumnoService;
+import com.example.aws.service.impl.SnsService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -28,9 +31,11 @@ import com.example.aws.service.AlumnoService;
 public class AlumnoController {
 
     private final AlumnoService alumnoService;
+    private final SnsService snsService;
 
-    public AlumnoController(AlumnoService alumnoService) {
+    public AlumnoController(AlumnoService alumnoService, SnsService snsService) {
         this.alumnoService = alumnoService;
+        this.snsService = snsService;
     }
 
     @PostMapping
@@ -63,19 +68,31 @@ public class AlumnoController {
         return ResponseEntity.ok(this.alumnoService.findAll());
     }
 
-    // -------- Additional Endpoints without implementation -------- //
-
-    @PostMapping("/{id}/fotoPerfil")
-    public ResponseEntity<?> uploadFotoPerfil(@PathVariable Long id, @RequestParam ("file") MultipartFile file) {
+    @PostMapping(path = "/{id}/fotoPerfil")
+    public ResponseEntity<?> uploadFotoPerfil(@PathVariable Long id, @RequestParam("foto") MultipartFile file) {
         String fotoPerfilUrl = this.alumnoService.uploadFotoPerfil(id, file);
-        return ResponseEntity.ok(fotoPerfilUrl);
+        System.out.println("Foto de perfil subida a URL: " + fotoPerfilUrl);
+
+        return ResponseEntity.ok(Map.of(
+                "mensaje", "Foto de perfil subida exitosamente",
+                "fotoPerfilUrl", fotoPerfilUrl));
     }
 
     @PostMapping("/{id}/email")
     public ResponseEntity<?> sendAlumnoEmail(@PathVariable Long id) {
-        this.alumnoService.sendAlumnoInfoEmail(id);
-        return ResponseEntity.ok().build();
+
+        Alumno alumno = this.alumnoService.findAlumno(id);
+
+        String message = AlumnoMessageBuilder.buildAlumnoMessage(
+                alumno,
+                "Envío de información del alumno por correo electrónico");
+
+        this.snsService.publish(message);
+
+        return ResponseEntity.ok(Map.of("mensaje", "Mensaje enviado vía SNS"));
     }
+
+    // -------- Additional Endpoints without implementation -------- //
 
     @PostMapping("/{id}/session/login")
     public ResponseEntity<?> loginAlumno(@PathVariable Long id, @RequestBody String loginData) {

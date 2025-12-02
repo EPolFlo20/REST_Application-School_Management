@@ -81,23 +81,15 @@ public class AlumnoServiceImpl implements AlumnoService {
     @Override
     public String uploadFotoPerfil(Long id, MultipartFile file) {
         Alumno alumno = findAlumno(id);
-        // Lógica para subir la foto de perfil y obtener la URL
-        // Subir con permisos públicos
-        // Usando ACL PublicRead
-        // Implementar credenciales para el SDK de AWS S3 y subir la imagen
-        String fotoPerfilUrl = "";
+
+        AwsS3Service awsS3Service = new AwsS3Service();
+
+        String fotoPerfilUrl = awsS3Service.uploadFile(id, file);
+        System.out.println("Foto de perfil URL: " + fotoPerfilUrl);
+
+        alumno.setFotoPerfilUrl(fotoPerfilUrl);
+        this.alumnoRepository.save(alumno);
 
         return fotoPerfilUrl;
     }
-
-    @Override
-    public void sendAlumnoInfoEmail(Long id) {
-        if (findAlumno(id) != null) {
-            // Lógica para enviar el correo electrónico con la información del alumno
-            System.out.println("Enviando correo electrónico con la información del alumno con ID: " + id);
-        } else {
-            throw new AlumnoException("No existe un alumno con el id " + id, HttpStatus.NOT_FOUND);
-        }
-    }
-
 }
