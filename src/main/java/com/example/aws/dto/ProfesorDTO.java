@@ -3,15 +3,10 @@ package com.example.aws.dto;
 import com.example.aws.Validations.HorasClaseValidation;
 import com.example.aws.Validations.NameValidation;
 import com.example.aws.Validations.NumeroEmpleadoValidation;
-import com.example.aws.Validations.idValidation;
 
 import jakarta.validation.constraints.NotNull;
 
 public record ProfesorDTO(
-        @NotNull
-        @idValidation
-        Long id,
-
         @NotNull
         @NameValidation        
         String nombres,

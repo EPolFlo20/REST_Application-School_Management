@@ -1,42 +1,40 @@
 package com.example.aws.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.aws.dto.ProfesorDTO;
 import com.example.aws.dto.ProfesorUpdateDTO;
-import com.example.aws.exception.AlumnoException;
 import com.example.aws.exception.ProfesorException;
 import com.example.aws.model.Profesor;
+import com.example.aws.repositories.ProfesorRepository;
 import com.example.aws.service.ProfesorService;
 
 @Service
 public class ProfesorServiceImpl implements ProfesorService {
 
-    private final List<Profesor> profesores = new ArrayList<>();
+    @Autowired
+    private ProfesorRepository profesorRepository;
 
     @Override
     public Profesor createProfesor(ProfesorDTO profesorDTO) {
-        validateProfesorDoesNotExist(profesorDTO.id());
+        Profesor newProfesor = new Profesor();
 
-        Profesor newProfesor = new Profesor(profesorDTO.id(), profesorDTO.nombres(), profesorDTO.apellidos(),
-                profesorDTO.numeroEmpleado(), profesorDTO.horasClase());
-        this.profesores.add(newProfesor);
+        newProfesor.setNombres(profesorDTO.nombres());
+        newProfesor.setApellidos(profesorDTO.apellidos());
+        newProfesor.setNumeroEmpleado(profesorDTO.numeroEmpleado());
+        newProfesor.setHorasClase(profesorDTO.horasClase());
+        this.profesorRepository.save(newProfesor);
 
         return newProfesor;
     }
 
     @Override
     public Profesor updateProfesor(Long id, ProfesorUpdateDTO profesorUpdateDTO) {
-        Profesor updatedProfesor = this.findProfesor(id);
-
-        if (profesorUpdateDTO.id() != null) {
-            updatedProfesor.setId(profesorUpdateDTO.id());
-        }
+        Profesor updatedProfesor = this.findById(id);
 
         if (profesorUpdateDTO.nombres() != null) {
             updatedProfesor.setNombres(profesorUpdateDTO.nombres());
@@ -46,7 +44,8 @@ public class ProfesorServiceImpl implements ProfesorService {
             updatedProfesor.setApellidos(profesorUpdateDTO.apellidos());
         }
 
-        if (profesorUpdateDTO.numeroEmpleado() != updatedProfesor.getNumeroEmpleado() && profesorUpdateDTO.numeroEmpleado() != 0) {
+        if (profesorUpdateDTO.numeroEmpleado() != updatedProfesor.getNumeroEmpleado()
+                && profesorUpdateDTO.numeroEmpleado() != 0) {
             updatedProfesor.setNumeroEmpleado(profesorUpdateDTO.numeroEmpleado());
         }
 
@@ -54,42 +53,23 @@ public class ProfesorServiceImpl implements ProfesorService {
             updatedProfesor.setHorasClase(profesorUpdateDTO.horasClase());
         }
 
-        int index = profesores.indexOf(updatedProfesor);
-        profesores.set(index, updatedProfesor);
-
-        return updatedProfesor;
+        return this.profesorRepository.save(updatedProfesor);
     }
 
     @Override
     public void deleteProfesor(Long id) {
-        Profesor profesor = this.findProfesor(id);
-        this.profesores.remove(profesor);
+        this.profesorRepository.deleteById(id);
     }
 
     @Override
-    public Optional<Profesor> findById(Long id) {
-        return this.profesores.stream()
-                .filter(a -> a.getId().equals(id))
-                .findFirst();
-    }
-
-    @Override
-    public Profesor findProfesor(Long id) {
-        Profesor profesor = this.findById(id)
-                .orElseThrow(() -> new ProfesorException("No existe un profesor con id: " + id, HttpStatus.NOT_FOUND));
-        return profesor;
+    public Profesor findById(Long id) {
+        return this.profesorRepository.findById(id)
+                .orElseThrow(() -> new ProfesorException("Profesor no encontrado", HttpStatus.NOT_FOUND));
     }
 
     @Override
     public List<Profesor> findAll() {
-        return this.profesores;
+        return this.profesorRepository.findAll();
     }
-
-    private void validateProfesorDoesNotExist(Long id) {
-        findById(id).ifPresent(a -> {
-            throw new AlumnoException("Ya existe un profesor con el id " + id, HttpStatus.BAD_REQUEST);
-        });
-    }
-
 
 }

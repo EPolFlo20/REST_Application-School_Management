@@ -1,7 +1,8 @@
 package com.example.aws.service;
 
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.aws.dto.AlumnoDTO;
 import com.example.aws.dto.AlumnoUpdateDTO;
@@ -15,10 +16,9 @@ public interface AlumnoService {
 
     void deleteAlumno(Long id);
 
-    Optional<Alumno> findById(Long id);
-
     Alumno findAlumno(Long id);
 
     List<Alumno> findAll();
 
+    String uploadFotoPerfil(Long id, MultipartFile file);
 }
