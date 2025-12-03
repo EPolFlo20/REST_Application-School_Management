@@ -13,13 +13,11 @@ public class SnsService {
 
     private final SnsClient snsClient;
 
-    // @Value("${aws.accessKeyId}")
     private String accessKey = "";
 
-    // @Value("${aws.secretAccessKey}")
     private String secretKey = "";
 
-    private String sessionToken = "+";
+    private String sessionToken = "";
 
     private final String topicArn = "";
 

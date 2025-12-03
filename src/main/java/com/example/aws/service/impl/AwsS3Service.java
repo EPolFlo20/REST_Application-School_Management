@@ -20,16 +20,12 @@ import com.example.aws.exception.AlumnoException;
 @Service
 public class AwsS3Service {
 
-    // @Value("${aws.s3.bucket}")
     private String bucketName = "aws-project-buket";
 
-    // @Value("${aws.region}")
     private String region = "us-east-1";
 
-    // @Value("${aws.accessKeyId}")
     private String accessKey = "";
 
-    // @Value("${aws.secretAccessKey}")
     private String secretKey = "";
 
     private String sessionToken = "";
